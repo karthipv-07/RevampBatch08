@@ -1,0 +1,9 @@
+#Default owner for all files
+@karthipv
+
+#Application code
+/src/* @karthipv #Backend Team
+
+Dockerfile* @karthipv #DevOps Team
+
+.github/* @karthipv #DevOps Team
