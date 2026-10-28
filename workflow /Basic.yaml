@@ -1,0 +1,13 @@
+name:Basic GHA Pipeline
+on:
+  push:
+    branches:
+      - feature/gayathriwork
+job:
+  Basic:
+    runs-on: ubuntu-26.04
+    
+    steps:
+      -name : basic GHA pipeline
+      run: echo " basic gha pipleines"
+  
