@@ -1,0 +1,17 @@
+name: CI Action Pipeline
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  sonar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Test Pipeline
+        run: echo "Sonar job started successfully!"
