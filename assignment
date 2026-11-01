@@ -1,0 +1,10 @@
+GitHub Assignment 2
+
+Created a GitHub account.
+Configured SSH key authentication.
+Cloned the GitHub repository using SSH.
+Created a feature branch named feature/tejas from the main branch.
+Created a text file and added this assignment summary.
+Staged and committed the file using Git commands.
+Pushed the feature branch to GitHub.
+Raised a Pull Request (PR) to the main branch.
