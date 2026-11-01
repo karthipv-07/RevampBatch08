@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+      - feature/Mehenro
+
+  workflow_dispatch:
 
 jobs:
   test:
