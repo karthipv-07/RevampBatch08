@@ -1,0 +1,34 @@
+name: 'Docker Build, Tag, and Push'
+description: 'Composite action to log in, build using Dockerfile.distroless, tag, and push to Docker Hub'
+inputs:
+  dockerhub-username:
+    description: 'Docker Hub Username'
+    required: true
+  dockerhub-token:
+    description: 'Docker Hub Access Token'
+    required: true
+  image-name:
+    description: 'Name of the Docker image'
+    required: true
+  image-tag:
+    description: 'Tag for the Docker image'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ inputs.dockerhub-username }}
+        password: ${{ inputs.dockerhub-token }}
+
+    - name: Build, Tag, and Push Docker Image
+      shell: bash
+      run: |
+        FULL_IMAGE="${{ inputs.dockerhub-username }}/${{ inputs.image-name }}:${{ inputs.image-tag }}"
+        LATEST_IMAGE="${{ inputs.dockerhub-username }}/${{ inputs.image-name }}:latest"
+
+        docker build -f Dockerfile.distroless -t "$FULL_IMAGE" -t "$LATEST_IMAGE" .
+        docker push "$FULL_IMAGE"
+        docker push "$LATEST_IMAGE"
