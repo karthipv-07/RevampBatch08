@@ -1,0 +1,41 @@
+name: CI/CD Pipeline
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  # Job 1: Runs ONLY on Pull Requests
+  sonarqube-check:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Required by SonarQube for blame/history analysis
+
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v4
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+  # Job 2: Runs ONLY on Push to main and waits for Environment Approval
+  build-and-push:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    environment: prod  # Triggers the manual approval gate created in Step 2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Composite Docker Build & Push Action
+        uses: ./.github/actions/docker-build-push
+        with:
+          dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
+          dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
+          image-name: revamp-batch08-app
+          image-tag: ${{ github.sha }}
